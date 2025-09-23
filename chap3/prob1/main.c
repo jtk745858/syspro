@@ -9,7 +9,7 @@ int main(){
 	int len;
 	int max;
 	max = 0;
-
+	printf("input : ");
 	while(fgets(line,MAXLINE,stdin) != NULL) {
 		len = strlen(line);
 
