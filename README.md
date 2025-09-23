@@ -1,2 +1,2 @@
 # syspro
-DCU_2-2_SystemProgramming
+DCU_sophomore-2_SystemProgramming
