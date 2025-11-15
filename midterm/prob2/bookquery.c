@@ -1,37 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "bookinfo.h"
 
-int main(int argc,char *argv[]){
-	
+void printInfo(struct bookinfo rec){
+	printf("%d\t%-20s\t%-15s\t%d\t%d\t\t%s\n",
+           rec.id,
+           rec.name,
+           rec.writer,
+           rec.year,
+           rec.numBorrow,
+           rec.canBorrow ? "True" : "False");
+}
+
+int main(int argc, char *argv[])  
+{
+	if(argc != 1){
+		fprintf(stderr,"How to use: %s",argv[0]);
+		return 1;
+	}
 	struct bookinfo rec;
-	FILE *fp;
-	if(argc != 2){
-		fprintf(stderr, "How to use: %s Option\n",argv[0]);
+	int option;
+
+	printf("0 : list of all books, 1 : list of avaliable books ) ");
+	scanf("%d",&option);
+
+	if(option != 0 && option != 1)
+	{
+		printf("Error : Input 0 or 1");
 		return 1;
 	}
 
-	fp = fopen("./database.txt","r");
-
-	if(*argv[1] == '0')
-	{
-		printf("%-4s %-12s %-10s %-6s %-14s %s\n","id","bookname","author","year","numofborrow","borrow");
-		while(fscanf(fp,"%d %s %s %d %d %s",&rec.num,rec.name,rec.writer,&rec.year,&rec.rent,rec.flag) ==6)
-			printf("%5d %11s %9s %5d %13d %s\n",rec.num,rec.name,rec.writer,rec.year,rec.rent,rec.flag);
-	}
-	else if(*argv[1] == '1')
-	{	
-		printf("%-4s %-12s %-10s %-6s %-14s %s\n","id","bookname","author","year","numofborrow","borrow");
-		while(fscanf(fp,"%d %s %s %d %d %s",&rec.num,rec.name,rec.writer,&rec.year,&rec.rent,rec.flag) ==6)
+	FILE *fp = fopen("db.dat","rb");
+	if (fp == NULL) {
+		printf("Error : Can not open file");
+		return 1;
+		}
+	printf("id\tbookname\tauthor\t\tyear\tnumofborrow\tborrow\n");
+	while (fread(&rec, sizeof(struct bookinfo), 1,fp) == 1) {
+		if(option == 0) {
+			printInfo(rec);
+		}
+		else if (option == 1)
 		{
-			if(rec.flag == "True")
-			{
-				printf("%5d %11s %9s %5d %13d %s\n",rec.num,rec.name,rec.writer,rec.year,rec.rent,rec.flag);
+			if (rec.canBorrow == 1) {
+				printInfo(rec);
 			}
-
 		}
 	}
 	fclose(fp);
 	return 0;
 }
+
 

@@ -1,8 +1,8 @@
 struct bookinfo {
-	int num;
-	char name[20];
-	char writer[20];
+	int id;
+	char name[50];
+	char writer[50];
 	int year;
-	int rent;
-	char flag[5];
+	int numBorrow;
+	int canBorrow;
 };
